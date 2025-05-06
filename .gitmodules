@@ -1,0 +1,6 @@
+[submodule "ip_camera_ros2"]
+	path = ip_camera_ros2
+	url = https://github.com/grupo-avispa/ip_camera_ros2
+[submodule "depth_anything_v2_ros2"]
+	path = depth_anything_v2_ros2
+	url = https://github.com/grupo-avispa/depth_anything_v2_ros2
