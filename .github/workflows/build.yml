@@ -35,8 +35,10 @@ jobs:
             ${{ runner.os }}-pip-
 
       # Install Python dependencies
-      - name: Install dependencies
-        run: pip3 install -r requirements.txt
+      - name: Install depth anything dependencies
+        run: |
+          cd depth_anything_v2_ros2
+          pip3 install -r requirements.txt
 
       # Setup ROS 2
       - name: Setup ROS 2
