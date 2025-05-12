@@ -1,0 +1,64 @@
+# GitHub Actions workflow to build the entire ROS perception pipeline
+
+name: Build Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-pipeline:
+    name: Build ROS Perception Pipeline
+    runs-on: ubuntu-24.04
+    steps:
+      # Cache APT packages
+      - name: Cache APT Packages
+        uses: awalsh128/cache-apt-pkgs-action@v1.4.3
+        with:
+          packages: git python3-pip
+
+      # Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4.2.2
+        with:
+          submodules: recursive
+
+      # Cache pip dependencies
+      - name: Cache pip
+        id: cache-pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Install Python dependencies
+      - name: Install dependencies
+        run: pip3 install -r requirements.txt
+
+      # Setup ROS 2
+      - name: Setup ROS 2
+        uses: ros-tooling/setup-ros@0.7.5
+        with:
+          required-ros-distributions: jazzy
+
+      # Build ROS packages
+      - name: Build ROS Perception Pipeline
+        uses: ros-tooling/action-ros-ci@0.3.13
+        with:
+          package-name: |
+            depth_anything_v2_ros2  
+            ip_camera_ros2
+          target-ros2-distro: jazzy
+          colcon-defaults: |
+            {
+              "build": {
+                "mixin": ["coverage-gcc", "coverage-pytest"]
+              },
+              "test": {
+                "mixin": ["coverage-pytest"]
+              }
+            }
+          skip-tests: true

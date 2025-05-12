@@ -2,6 +2,8 @@
 
 ![ROS2](https://img.shields.io/badge/ros2-jazzy-blue?logo=ros&logoColor=white)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build](https://github.com/grupo-avispa/ros_perception_pipeline/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/grupo-avispa/ros_perception_pipeline/actions/workflows/build.yml)
+
 
 ## Overview
 
@@ -26,7 +28,7 @@ To build from source, clone the latest version from the main repository into you
 
 ```bash
 cd colcon_workspace/src
-git clone https://github.com/grupo-avispa/ros_perception_pipeline.git
+git clone --recurse-submodules https://github.com/grupo-avispa/ros_perception_pipeline.git
 cd ../
 rosdep install -i --from-path src --rosdistro jazzy -y
 colcon build --symlink-install
